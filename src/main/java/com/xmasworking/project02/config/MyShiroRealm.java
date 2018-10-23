@@ -61,15 +61,18 @@ public class MyShiroRealm extends AuthorizingRealm implements CacheManagerAware 
 
         //验证用户
         try {
-            accountEntity.setOpenid(username);
+            accountEntity.setOpenid(String.valueOf(utoken.getPassword()));
+
             Optional<Account> optional = accountRepository.findOne(Example.of(accountEntity));
             if(!optional.isPresent()){
                 accountEntity = optional.get();
             }else {
+                accountEntity.setNickname(username);
                 accountEntity = accountRepository.save(accountEntity);
             }
         }catch (NoSuchElementException nee){
-            throw new UnknownAccountException();
+            nee.printStackTrace();
+            throw new UnknownAccountException(nee.getMessage());
         }
 
         return new SimpleAuthenticationInfo(accountEntity, accountEntity.getOpenid(), this.getClass().getName());
