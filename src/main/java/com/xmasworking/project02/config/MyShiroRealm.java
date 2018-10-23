@@ -64,7 +64,7 @@ public class MyShiroRealm extends AuthorizingRealm implements CacheManagerAware 
             accountEntity.setOpenid(String.valueOf(utoken.getPassword()));
 
             Optional<Account> optional = accountRepository.findOne(Example.of(accountEntity));
-            if(!optional.isPresent()){
+            if(optional.isPresent()){
                 accountEntity = optional.get();
             }else {
                 accountEntity.setNickname(username);
