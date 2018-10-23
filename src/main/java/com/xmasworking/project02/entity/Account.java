@@ -1,5 +1,6 @@
 package com.xmasworking.project02.entity;
 
+import com.xmasworking.project02.util.EmojiCharacterUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,4 +35,12 @@ public class Account {
      * 用户昵称
      */
     String nickname;
+
+    public String getNickname() {
+        return EmojiCharacterUtil.reverse(nickname);
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = EmojiCharacterUtil.escape(nickname);
+    }
 }
