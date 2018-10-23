@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--/*@thymesVar id="error" type="java.lang.String"*/-->
+<p th:text="${error}"></p>
+<img src="" th:src="${WeCharUserInfo.headimgurl}">
+<!--/*@thymesVar id="WeCharUserInfo" type="com.xmasworking.project02.model.WeCharUserInfo"*/-->
+<p th:text="${WeCharUserInfo.openid}"></p>
+<p th:text="${WeCharUserInfo.nickname}"></p>
+<p th:text="${WeCharUserInfo.sex}"></p>
+<p th:text="${WeCharUserInfo.province}"></p>
+<p th:text="${WeCharUserInfo.city}"></p>
+<p th:text="${WeCharUserInfo.country}"></p>
+<p th:text="${WeCharUserInfo.privilege}"></p>
+<p th:text="${WeCharUserInfo.unionid}"></p>
+<p th:text="${WeCharUserInfo.language}"></p>
+</body>
+</html>
