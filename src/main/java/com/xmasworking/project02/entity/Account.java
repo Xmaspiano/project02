@@ -1,6 +1,6 @@
 package com.xmasworking.project02.entity;
 
-import com.xmasworking.project02.util.EmojiCharacterUtil;
+import com.github.binarywang.java.emoji.EmojiConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,10 +37,10 @@ public class Account {
     String nickname;
 
     public String getNickname() {
-        return EmojiCharacterUtil.reverse(nickname);
+        return this.nickname;
     }
 
     public void setNickname(String nickname) {
-        this.nickname = EmojiCharacterUtil.escape(nickname);
+        this.nickname =  EmojiConverter.getInstance().toHtml(nickname);
     }
 }
