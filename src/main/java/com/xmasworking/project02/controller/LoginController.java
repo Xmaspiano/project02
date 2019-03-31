@@ -45,7 +45,7 @@ public class LoginController {
 
     @RequestMapping
     public ModelAndView index(){
-        return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4b637efe077fe3a3&redirect_uri=http%3a%2f%2fwww.medicalhelper.cn%2flogin%2fcode&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect"));
+        return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8047ed4e28fc1ae3&redirect_uri=http%3a%2f%2fwww.medicalhelper.cn%2flogin%2fcode&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect"));
     }
 
     @RequestMapping("/code")
