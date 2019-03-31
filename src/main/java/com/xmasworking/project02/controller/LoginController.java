@@ -15,8 +15,8 @@ import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -48,7 +48,7 @@ public class LoginController {
         return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8047ed4e28fc1ae3&redirect_uri=http%3a%2f%2fwww.medicalhelper.cn%2flogin%2fcode&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect"));
     }
 
-    @RequestMapping("/code")
+    @PostMapping("/code")
     public ModelAndView getWecharCode(String code){
         ModelAndView modelAndView = new ModelAndView("index");
         String error = "";
@@ -69,9 +69,7 @@ public class LoginController {
         return modelAndView;
     }
 
-    @RequestMapping("/sayhello")
-    @ResponseBody
-    public WeCharUserInfo sayHello(String code) {
+    private WeCharUserInfo sayHello(String code) {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(
                 "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                         "appid=wx8047ed4e28fc1ae3&secret=9720b9ba7c30d0db6ce9598fad7f0b72&code="+code+"&" +
@@ -109,7 +107,7 @@ public class LoginController {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveAccountInfo(WeCharCode weCharCode, WeCharUserInfo weCharUserInfo){
+    void saveAccountInfo(WeCharCode weCharCode, WeCharUserInfo weCharUserInfo){
 
         Account accountEntity = new Account();
         accountEntity.setOpenid(String.valueOf(weCharCode.getOpenid()));
@@ -145,8 +143,6 @@ public class LoginController {
         userInfo.setPrivilege(weCharUserInfo.getPrivilege());
         userInfo.setSex(weCharUserInfo.getSex());
         userInfo.setUnionid(weCharUserInfo.getUnionid());
-        userInfo.setErrcode(weCharUserInfo.getErrcode());
-        userInfo.setErrmsg(weCharUserInfo.getErrmsg());
         userInfoRepositiory.save(userInfo);
 
     }
