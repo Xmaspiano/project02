@@ -71,10 +71,13 @@ public class LoginController {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+
+        System.out.println(json);
         WeCharCode weCharCode=JSONObject.parseObject(json,WeCharCode.class);
         if(weCharCode.getErrcode() != null){
             return new WeCharUserInfo();
         }
+
         ResponseEntity<String> responseEntity2 = restTemplate.getForEntity(
                 "https://api.weixin.qq.com/sns/userinfo?" +
                         "access_token="+weCharCode.getAccess_token()+"&" +
@@ -86,6 +89,7 @@ public class LoginController {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+        System.out.println(json);
         WeCharUserInfo weCharUserInfo=JSONObject.parseObject(json,WeCharUserInfo.class);
         return weCharUserInfo;
     }
