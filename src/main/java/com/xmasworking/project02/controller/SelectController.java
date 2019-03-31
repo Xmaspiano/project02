@@ -1,11 +1,25 @@
 package com.xmasworking.project02.controller;
 
+import com.xmasworking.project02.entity.Account;
+import com.xmasworking.project02.entity.Commit;
+import com.xmasworking.project02.entity.UseCode;
+import com.xmasworking.project02.repository.CommitRepository;
 import com.xmasworking.project02.repository.ShowUserInfoRepository;
+import com.xmasworking.project02.repository.UseCodeRepository;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,6 +33,12 @@ public class SelectController {
 
     @Autowired
     ShowUserInfoRepository showUserInfoRepository;
+
+    @Autowired
+    CommitRepository commitRepository;
+
+    @Autowired
+    UseCodeRepository useCodeRepository;
 
     @RequestMapping
     public ModelAndView index() {
@@ -36,10 +56,47 @@ public class SelectController {
     }
 
     @RequestMapping("commit")
-    public String commit(@RequestParam(value = "ids[]") Long[] ids){
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public Map commit(@RequestParam(value = "ids[]") Long[] ids,HttpSession httpSession){
+        String code = (String) httpSession.getAttribute("code");
+
+        Map map = new HashMap(16);
+        if(ids.length != 10){
+            map.put("status", false);
+            map.put("error", "票数异常，请投10票!!!");
+            return map;
+        }
+
+        Account account = (Account)SecurityUtils.getSubject().getPrincipal();
+        UseCode useCode = useCodeRepository.findOneByOpenid(account.getOpenid());
+        if(useCode != null && useCode.getCode().equals(code)){
+
+        }else {
+            System.out.println("投票码异常!!!"+useCode);
+        }
+        useCode.setStatus(1);
+        useCodeRepository.save(useCode);
+
+
+        int length = commitRepository.countByOpenid(account.getOpenid());
+        if(length < 10){
         //记录投票信息
+            List<Commit> commits = new ArrayList<>();
+            Commit commit;
+            for(Long showid:ids){
+                commit = new Commit();
+                commit.setOpenid(account.getOpenid());
+                commit.setShowid(showid);
+                commits.add(commit);
+            }
+            commitRepository.saveAll(commits);
+        }
         //投票成功
-        return "redirect:/success";
+        map.put("forword", "/rank");
+        map.put("status", true);
+        map.put("msg", "登录成功");
+        return map;
     }
 
 }

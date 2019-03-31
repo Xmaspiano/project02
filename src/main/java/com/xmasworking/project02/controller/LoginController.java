@@ -112,7 +112,6 @@ public class LoginController {
         Optional<Account> optional = accountRepository.findOne(Example.of(accountEntity));
         if(optional.isPresent()){
             accountEntity = optional.get();
-
         }
         accountEntity.setNickname(weCharUserInfo.getNickname());
         accountEntity.setExpires_in(weCharCode.getExpires_in());
