@@ -100,12 +100,13 @@ public class LoginController {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        UserInfoEntity weCharUserInfo=JSONObject.parseObject(json,UserInfoEntity.class);
+        WeCharUserInfo weCharUserInfo=JSONObject.parseObject(json,WeCharUserInfo.class);
+        this.saveAccountInfo(weCharCode, weCharUserInfo);
         return weCharUserInfo;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveAccountInfo(WeCharCode weCharCode, UserInfoEntity userInfoEntity){
+    public void saveAccountInfo(WeCharCode weCharCode, WeCharUserInfo weCharUserInfo){
 
         Account accountEntity = new Account();
         accountEntity.setOpenid(String.valueOf(weCharCode.getOpenid()));
@@ -115,7 +116,7 @@ public class LoginController {
             accountEntity = optional.get();
 
         }
-        accountEntity.setNickname(userInfoEntity.getNickname());
+        accountEntity.setNickname(weCharUserInfo.getNickname());
         accountEntity.setExpires_in(weCharCode.getExpires_in());
         accountEntity.setAccess_token(weCharCode.getAccess_token());
         accountEntity.setRefresh_token(weCharCode.getRefresh_token());
@@ -124,14 +125,26 @@ public class LoginController {
 
 
         UserInfoEntity userInfo = new UserInfoEntity();
-        userInfo.setOpenid(userInfoEntity.getOpenid());
+        userInfo.setOpenid(weCharUserInfo.getOpenid());
 
         Optional<UserInfoEntity> optionalUserInfo = userInfoRepositiory.findOne(Example.of(userInfo));
         if(optionalUserInfo.isPresent()){
             userInfo = optionalUserInfo.get();
-            userInfoEntity.setId(userInfo.getId());
         }
-        userInfoRepositiory.save(userInfoEntity);
+
+        userInfo.setOpenid(weCharUserInfo.getOpenid());
+        userInfo.setNickname(weCharUserInfo.getNickname());
+        userInfo.setCity(weCharUserInfo.getCity());
+        userInfo.setCountry(weCharUserInfo.getCountry());
+        userInfo.setHeadimgurl(weCharUserInfo.getHeadimgurl());
+        userInfo.setLanguage(weCharUserInfo.getLanguage());
+        userInfo.setProvince(weCharUserInfo.getProvince());
+        userInfo.setPrivilege(weCharUserInfo.getPrivilege());
+        userInfo.setSex(weCharUserInfo.getSex());
+        userInfo.setUnionid(weCharUserInfo.getUnionid());
+        userInfo.setErrcode(weCharUserInfo.getErrcode());
+        userInfo.setErrmsg(weCharUserInfo.getErrmsg());
+        userInfoRepositiory.save(userInfo);
 
     }
 }
