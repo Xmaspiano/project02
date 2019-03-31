@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <style type="text/css">
+        body{background-image: url("/images/bg.jpg");background-size: 100%}
+
+        #invite_code{margin:0 auto;display: block;width: 60%;height: 80px;border-radius:16px;background: #96a5bb;margin-top:140% }
+        input{font-size:36px;padding-left: 20px;text-align: center;color: #435a7c }
+        button {margin:0 auto;display: block;background-image: url("/images/btn.png");background-size: 100%;width: 300px;height: 80px;margin-top:50px;border-top-style: none;
+            border-right-style: none;
+            border-bottom-style: none;
+            border-left-style: none;background-color:#fff }
+
+        input[name="invite_code"]::-webkit-input-placeholder { /* WebKit browsers */
+            color: #435a7c;
+        }
+
+        input[name="invite_code"]:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #435a7c;
+
+        }
+        input[name="invite_code"]::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #435a7c;
+
+        }
+
+        input[name="invite_code"]:-ms-input-placeholder { /* Internet Explorer 10+ */
+            color: #435a7c;
+
+        }
+    </style>
+</head>
+<body>
+<div id="main_show"></div>
+<form id="form1" action="/main/checkcode" method="post">
+    <div>
+        <input id="invite_code" class="form-control" name="invite_code" value="" th:placeholder="${msg==null?'请在这里输入你的手机号':msg}" >
+        <button id="submit_code" name="submit_code"></button>
+    </div>
+</form>
+</body>
+</html>

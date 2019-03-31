@@ -31,7 +31,7 @@ public class ShiroConfig {
         bean.setSecurityManager(securityManager);
         //配置登录的url和登录成功的url
         bean.setLoginUrl("/login");
-//        bean.setSuccessUrl("/system/loginSuccess");
+        bean.setSuccessUrl("/main");
 //        bean.setUnauthorizedUrl("/system/index");
 
         //自定义拦截器
