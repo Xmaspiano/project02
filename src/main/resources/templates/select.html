@@ -86,11 +86,6 @@
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var typeArray = /*[[${listKeySet}]]*/ [];
-    /*]]>*/
-</script>
 <script>
     $(function(){
 
@@ -146,10 +141,6 @@
         });
 
         $("#apply").on("click",function(){
-            if(typeArray.length==0){
-                return false;
-            }
-
             $(this).popover({
                 html: true,
                 content:function(){
@@ -161,29 +152,13 @@
                     { show: 500, hide: 1000 }
             });
 
-            for(var i=0;i<typeArray.length;i++){
-                var maxSize = $("button.btn[name='selectBtn'][data-type="+typeArray[i]+"]").length;
-                var realSize = $("button.btn-primary[name='selectBtn'][data-type="+typeArray[i]+"]").length;
-                if(maxSize/2 != realSize){
-
-                    $("#applyContent").html(typeArray[i]+"，需选择"+maxSize/2+"名候选人！");
-
-                    $(this).popover('show');
-                    setTimeout(function(){
-                        $("#apply").popover('hide');
-                    },2000);
-                    return false;
-                }
-            }
-
-            var type = $(this).data("type");
-            var maxSize = $("button.btn[name='selectBtn'][data-type="+type+"]").length;
-            var realSize = $("button.btn-primary[name='selectBtn'][data-type="+type+"]").length;
-
-
-            var ids = [];
-            for(var i=0;i<$("button.btn-primary[name='selectBtn']").length;i++){
-                ids.push($($("button.btn-primary[name='selectBtn']")[i]).data("id"));
+            if(ids.length<10){
+                $("#applyContent").html("需选择10名候选人！");
+                $(this).popover('show');
+                setTimeout(function(){
+                    $("#apply").popover('hide');
+                },2000);
+                return false;
             }
 
             $.ajax({
