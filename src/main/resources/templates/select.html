@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>投票</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        h2{color: red;text-align: center;}
+    </style>
+</head>
+<body>
+<img src="/images/selectbg.jpeg" class="img-responsive center-block">
+<div id="selectBody" class="container">
+    <!--<h2>四川路桥桥梁工程有限责任公司<br>十大杰出贡献员工评选</h2>-->
+    <hr style="margin: 10px 0">
+    <p>请从以下20位候选人中选出10人。本次投票分为7个类别，每个类别有2-4人，每个类别中需选出1-2人，共计10人。请按规则投票，否则投票无效。</p>
+        <div class="panel panel-primary" >
+            <div class="panel-heading">
+                <div>
+                    <h3 class="panel-title">
+                        标题
+                        <small> - 备注</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="panel-body row" style="margin: -10px">
+                <th:block th:each="showUserInfo,infoStat : ${stringList}">
+                    <div class="thumbnail col-xs-6">
+                        <h4 class="text-center" th:text="${showUserInfo.username}">X</h4>
+                        <img th:src="${'/images/showuserinfo/user/'+showUserInfo.username+'.jpg'}" class="img-rounded">
+                        <div class="caption text-center">
+                            <button name="selectBtn" th:attr="data-type=${showUserInfo.type},data-id=${showUserInfo.id}"
+                                    class="btn-default btn" role="button" style="width: 100px">投票</button>
+                            <div style="height: 6px"></div>
+                            <button th:name="${'infoBtn_'+showUserInfo.id}" th:id="${'infoBtn_'+showUserInfo.id}"
+                                    th:attr="data-name=${showUserInfo.username}" class="btn-default btn"
+                                    data-toggle="modal" data-target="#myModal" role="button" style="width: 100px">候选人详情</button>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+
+    <button class="btn btn-success" id="apply" style="width: 100%">投票</button>
+    <div class="text-center" style="padding: 15px 0px 30px 0px">
+        <iframe name="Copyright" width=100% height=100%
+                marginwidth=0 marginheight=0 frameborder="no" border="0"  src="/src/Copyright.html" ></iframe>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!--<span aria-hidden="true">&times;</span>-->
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">候选人详情</h4>
+            </div>
+            <div id="showBody" style="min-height: 800px">
+                <img id="userShow" src="#" class="img-responsive center-block"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 100%">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="applyContent" class="hidden"></div>
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var typeArray = /*[[${listKeySet}]]*/ [];
+    /*]]>*/
+</script>
+<script>
+    $(function(){
+
+        if(window.history && window.history.pushState) {
+            $(window).on('popstate', function () {
+                var hashLocation = location.hash;
+                var hashSplit = hashLocation.split("#!/");
+                var hashName = hashSplit[1];
+                if (hashName !== '') {
+                    var hash = window.location.hash;
+                    if (hash === '') {
+                        $('#myModal').modal("hide");
+                    }
+                }
+            });
+            window.history.pushState('forward', null, './#forward');
+        }
+
+        $('#myModal').on('show.bs.modal', function (e) {
+            var name = $(e.relatedTarget).data("name");
+            $("#userShow").attr("src","/images/showuserinfo/usershow/"+name+".jpg");
+        });
+
+        $("button[name='selectBtn']").on("click",function(){
+            var type = $(this).data("type");
+            var maxSize = $("button.btn[name='selectBtn'][data-type="+type+"]").length;
+            var realSize = $("button.btn-primary[name='selectBtn'][data-type="+type+"]").length;
+
+            if($(this).hasClass("btn-primary") || maxSize/2 > realSize){
+                $(this).toggleClass(function(){
+                    return "btn-primary";
+                });
+                if($(this).html() == "已投"){
+                    $(this).html("投票");
+                }else{
+                    $(this).html("已投");
+                }
+            }else{
+                $(this).popover({
+                    content:""+type+"，已选择"+realSize+"名候选人！",
+                    placement: "top",
+                    trigger:"manual",
+                    delay:
+                        { show: 500, hide: 1000 }
+
+                });
+                $(this).popover('show');
+                var that = this;
+                setTimeout(function(){
+                    $(that).popover('hide');
+                },2000);
+            }
+        });
+
+        $("#apply").on("click",function(){
+            if(typeArray.length==0){
+                return false;
+            }
+
+            $(this).popover({
+                html: true,
+                content:function(){
+                    return $("#applyContent").html();
+                },
+                placement: "top",
+                trigger:"manual",
+                delay:
+                    { show: 500, hide: 1000 }
+            });
+
+            for(var i=0;i<typeArray.length;i++){
+                var maxSize = $("button.btn[name='selectBtn'][data-type="+typeArray[i]+"]").length;
+                var realSize = $("button.btn-primary[name='selectBtn'][data-type="+typeArray[i]+"]").length;
+                if(maxSize/2 != realSize){
+
+                    $("#applyContent").html(typeArray[i]+"，需选择"+maxSize/2+"名候选人！");
+
+                    $(this).popover('show');
+                    setTimeout(function(){
+                        $("#apply").popover('hide');
+                    },2000);
+                    return false;
+                }
+            }
+
+            var type = $(this).data("type");
+            var maxSize = $("button.btn[name='selectBtn'][data-type="+type+"]").length;
+            var realSize = $("button.btn-primary[name='selectBtn'][data-type="+type+"]").length;
+
+
+            var ids = [];
+            for(var i=0;i<$("button.btn-primary[name='selectBtn']").length;i++){
+                ids.push($($("button.btn-primary[name='selectBtn']")[i]).data("id"));
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: "/select/commit",
+                data: {"ids":ids},
+                success: function(data){
+                    if(data.status){
+                        window.top.location = data.forword;
+                    }else{
+                        $("#applyContent").html("投票异常"+data.error);
+                        $("#apply").popover('show');
+                        setTimeout(function(){
+                            $("#apply").popover('hide');
+                        },2000);
+                    }
+                }
+            });
+
+        });
+    });
+</script>
+</html>

@@ -45,12 +45,12 @@ public class LoginController {
 
     @RequestMapping
     public ModelAndView index(){
-        return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8047ed4e28fc1ae3&redirect_uri=http%3a%2f%2fwww.medicalhelper.cn%2flogin%2fcode&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect"));
+        return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc3597c3c72174c6d&redirect_uri=http%3a%2f%2fwww.medicalhelper.cn%2flogin%2fcode&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect"));
     }
 
     @RequestMapping("/code")
-    public ModelAndView getWecharCode(String code){
-        ModelAndView modelAndView = new ModelAndView("index");
+    public String getWecharCode(String code){
+//        ModelAndView modelAndView = new ModelAndView("index");
         String error = "";
         WeCharUserInfo weCharUserInfo = null;
         try {
@@ -64,15 +64,15 @@ public class LoginController {
             e.printStackTrace();
             error = e.getMessage();
         }
-        modelAndView.addObject("Error",error);
-        modelAndView.addObject("WeCharUserInfo",weCharUserInfo);
-        return modelAndView;
+//        modelAndView.addObject("Error",error);
+//        modelAndView.addObject("WeCharUserInfo",weCharUserInfo);
+        return "index";
     }
 
     private WeCharUserInfo sayHello(String code) {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(
                 "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                        "appid=wx8047ed4e28fc1ae3&secret=9720b9ba7c30d0db6ce9598fad7f0b72&code="+code+"&" +
+                        "appid=wxc3597c3c72174c6d&secret=9720b9ba7c30d0db6ce9598fad7f0b72&code="+code+"&" +
                         "grant_type=authorization_code", String.class);
 
         String json = null;
