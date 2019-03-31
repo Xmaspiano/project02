@@ -63,7 +63,7 @@ public class LoginController {
             e.printStackTrace();
             error = e.getMessage();
         }
-        return "main";
+        return "redirect:/main";
     }
 
     private WeCharUserInfo sayHello(String code) {

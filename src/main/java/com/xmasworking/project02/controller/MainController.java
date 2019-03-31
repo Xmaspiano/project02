@@ -44,7 +44,10 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView("main");
         httpSession.setAttribute("code",inviteCode);
         try {
+            System.out.println(inviteCode);
             int isCode = codeRepository.countByCode(inviteCode.trim());
+            System.out.println(isCode);
+            System.out.println("--------------");
             //是否无效码
             if(isCode <=0){
                 throw new Exception("投票码无效!!!");
