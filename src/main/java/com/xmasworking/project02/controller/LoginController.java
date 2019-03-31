@@ -101,7 +101,10 @@ public class LoginController {
             throw new RuntimeException(e);
         }
         WeCharUserInfo weCharUserInfo=JSONObject.parseObject(json,WeCharUserInfo.class);
+
         this.saveAccountInfo(weCharCode, weCharUserInfo);
+        System.out.println(weCharCode);
+        System.out.println(weCharUserInfo);
         return weCharUserInfo;
     }
 
