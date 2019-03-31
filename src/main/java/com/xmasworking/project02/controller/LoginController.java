@@ -50,7 +50,6 @@ public class LoginController {
 
     @RequestMapping("/code")
     public String getWecharCode(String code){
-//        ModelAndView modelAndView = new ModelAndView("index");
         String error = "";
         WeCharUserInfo weCharUserInfo = null;
         try {
@@ -64,9 +63,7 @@ public class LoginController {
             e.printStackTrace();
             error = e.getMessage();
         }
-//        modelAndView.addObject("Error",error);
-//        modelAndView.addObject("WeCharUserInfo",weCharUserInfo);
-        return "index";
+        return "main";
     }
 
     private WeCharUserInfo sayHello(String code) {
