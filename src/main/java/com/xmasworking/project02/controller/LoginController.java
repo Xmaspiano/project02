@@ -69,7 +69,7 @@ public class LoginController {
     private WeCharUserInfo sayHello(String code) {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(
                 "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                        "appid=wxc3597c3c72174c6d&secret=9720b9ba7c30d0db6ce9598fad7f0b72&code="+code+"&" +
+                        "appid=wxc3597c3c72174c6d&secret=7254410a0147104b9d2557126bc33dcc&code="+code+"&" +
                         "grant_type=authorization_code", String.class);
 
         String json = null;
