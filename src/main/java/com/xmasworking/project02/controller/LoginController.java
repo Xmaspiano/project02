@@ -1,14 +1,20 @@
 package com.xmasworking.project02.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xmasworking.project02.entity.Account;
+import com.xmasworking.project02.entity.UserInfoEntity;
 import com.xmasworking.project02.model.WeCharCode;
 import com.xmasworking.project02.model.WeCharUserInfo;
+import com.xmasworking.project02.repository.AccountRepository;
+import com.xmasworking.project02.repository.UserInfoRepositiory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,9 +37,15 @@ public class LoginController {
     @Autowired
     RestTemplate restTemplate;
 
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
+    UserInfoRepositiory userInfoRepositiory;
+
     @RequestMapping
     public ModelAndView index(){
-        return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8047ed4e28fc1ae3&redirect_uri=http%3a%2f%2fwww.medicalhelper.cn%2flogin%2fcode&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect"));
+        return new ModelAndView(new RedirectView("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4b637efe077fe3a3&redirect_uri=http%3a%2f%2fwww.medicalhelper.cn%2flogin%2fcode&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect"));
     }
 
     @RequestMapping("/code")
@@ -61,7 +74,7 @@ public class LoginController {
     public WeCharUserInfo sayHello(String code) {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(
                 "https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                        "appid=wx8047ed4e28fc1ae3&secret=9720b9ba7c30d0db6ce9598fad7f0b72&code="+code+"&" +
+                        "appid=wx4b637efe077fe3a3&secret=9720b9ba7c30d0db6ce9598fad7f0b72&code="+code+"&" +
                         "grant_type=authorization_code", String.class);
 
         String json = null;
@@ -71,8 +84,6 @@ public class LoginController {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-        System.out.println(json);
         WeCharCode weCharCode=JSONObject.parseObject(json,WeCharCode.class);
         if(weCharCode.getErrcode() != null){
             return new WeCharUserInfo();
@@ -89,8 +100,38 @@ public class LoginController {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        System.out.println(json);
-        WeCharUserInfo weCharUserInfo=JSONObject.parseObject(json,WeCharUserInfo.class);
+        UserInfoEntity weCharUserInfo=JSONObject.parseObject(json,UserInfoEntity.class);
         return weCharUserInfo;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void saveAccountInfo(WeCharCode weCharCode, UserInfoEntity userInfoEntity){
+
+        Account accountEntity = new Account();
+        accountEntity.setOpenid(String.valueOf(weCharCode.getOpenid()));
+
+        Optional<Account> optional = accountRepository.findOne(Example.of(accountEntity));
+        if(optional.isPresent()){
+            accountEntity = optional.get();
+
+        }
+        accountEntity.setNickname(userInfoEntity.getNickname());
+        accountEntity.setExpires_in(weCharCode.getExpires_in());
+        accountEntity.setAccess_token(weCharCode.getAccess_token());
+        accountEntity.setRefresh_token(weCharCode.getRefresh_token());
+        accountEntity.setSystem_time(System.currentTimeMillis());
+        accountRepository.save(accountEntity);
+
+
+        UserInfoEntity userInfo = new UserInfoEntity();
+        userInfo.setOpenid(userInfoEntity.getOpenid());
+
+        Optional<UserInfoEntity> optionalUserInfo = userInfoRepositiory.findOne(Example.of(userInfo));
+        if(optionalUserInfo.isPresent()){
+            userInfo = optionalUserInfo.get();
+            userInfoEntity.setId(userInfo.getId());
+        }
+        userInfoRepositiory.save(userInfoEntity);
+
     }
 }

@@ -1,6 +1,7 @@
 package com.xmasworking.project02.entity;
 
 import com.github.binarywang.java.emoji.EmojiConverter;
+import com.xmasworking.project02.model.WeCharUserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,34 +20,18 @@ import java.io.Serializable;
  */
 @Entity
 @Data
-@Table(name = "account")
+@Table(name = "userinfo")
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicUpdate
-public class Account implements Serializable {
+public class UserInfoEntity extends WeCharUserInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    /**
-     * 用户的唯一标识
-     */
-    String openid;
-    /**
-     * 用户昵称
-     */
-    String nickname;
 
-    String expires_in;
-    String access_token;
-    String refresh_token;
-    Long system_time;
-
-    public String getNickname() {
-        return this.nickname;
-    }
-
+    @Override
     public void setNickname(String nickname) {
-        this.nickname =  EmojiConverter.getInstance().toHtml(nickname);
+        super.setNickname(EmojiConverter.getInstance().toHtml(nickname));
     }
 }
