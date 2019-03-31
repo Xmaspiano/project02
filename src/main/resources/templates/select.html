@@ -111,10 +111,10 @@
 
         $("button[name='selectBtn']").on("click",function(){
             var type = $(this).data("type");
-            var maxSize = $("button.btn[name='selectBtn'][data-type="+type+"]").length;
+            var maxSize = 10;
             var realSize = $("button.btn-primary[name='selectBtn'][data-type="+type+"]").length;
 
-            if($(this).hasClass("btn-primary") || maxSize/2 > realSize){
+            if($(this).hasClass("btn-primary") || maxSize > realSize){
                 $(this).toggleClass(function(){
                     return "btn-primary";
                 });
@@ -125,7 +125,7 @@
                 }
             }else{
                 $(this).popover({
-                    content:""+type+"，已选择"+realSize+"名候选人！",
+                    content:"已选择"+realSize+"名候选人！",
                     placement: "top",
                     trigger:"manual",
                     delay:
@@ -153,6 +153,10 @@
             });
 
             var ids = [];
+            for(var i=0;i<$("button.btn-primary[name='selectBtn']").length;i++){
+                ids.push($($("button.btn-primary[name='selectBtn']")[i]).data("id"));
+            }
+
             if(ids.length<10){
                 $("#applyContent").html("需选择10名候选人！");
                 $(this).popover('show');
