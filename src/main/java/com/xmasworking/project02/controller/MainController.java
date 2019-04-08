@@ -62,7 +62,7 @@ public class MainController {
                 throw new Exception("投票码已投满票数!!!");
             }
 
-            modelAndView = new ModelAndView("redirect:/select?inviteCode="+inviteCode);
+            modelAndView = new ModelAndView("redirect:/select");
         }catch (Exception e){
             e.printStackTrace();
             modelAndView.addObject("msg", e.getMessage());

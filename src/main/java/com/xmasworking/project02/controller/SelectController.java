@@ -41,16 +41,17 @@ public class SelectController {
     UseCodeRepository useCodeRepository;
 
     @RequestMapping
-    public ModelAndView index(String inviteCode) {
+    public ModelAndView index() {
+        Account account = (Account)SecurityUtils.getSubject().getPrincipal();
 
-        if(inviteCode == null || "".equals(inviteCode)){
-            ModelAndView modelAndView = new ModelAndView("redirect:/main/checkcode");
-            modelAndView.addObject("invite_code", "");
+        UseCode useCode = useCodeRepository.findOneByOpenid(account.getOpenid());
+        if(useCode == null || "".equals(useCode.getCode())){
+            ModelAndView modelAndView = new ModelAndView("redirect:/main");
             return modelAndView;
         }
 
         //如果投过票则显示已投
-        Account account = (Account)SecurityUtils.getSubject().getPrincipal();
+
         int length = commitRepository.countByOpenid(account.getOpenid());
         if(length >= 10){
             ModelAndView modelAndView = new ModelAndView("redirect:/success");
@@ -60,7 +61,6 @@ public class SelectController {
         //如果没投过则进入投票页面
         ModelAndView modelAndView = new ModelAndView("select");
         modelAndView.addObject("stringList", showUserInfoRepository.findAll());
-        modelAndView.addObject("inviteCode", inviteCode);
 
         return modelAndView;
     }
