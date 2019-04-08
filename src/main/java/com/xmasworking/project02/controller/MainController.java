@@ -46,8 +46,7 @@ public class MainController {
         try {
             System.out.println(inviteCode);
             int isCode = codeRepository.countByCode(inviteCode.trim());
-            System.out.println(isCode);
-            System.out.println("--------------");
+
             //是否无效码
             if(isCode <=0){
                 throw new Exception("投票码无效!!!");
@@ -63,7 +62,7 @@ public class MainController {
                 throw new Exception("投票码已投满票数!!!");
             }
 
-            modelAndView = new ModelAndView("redirect:/select");
+            modelAndView = new ModelAndView("redirect:/select?inviteCode="+inviteCode);
         }catch (Exception e){
             e.printStackTrace();
             modelAndView.addObject("msg", e.getMessage());
