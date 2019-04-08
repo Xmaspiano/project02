@@ -56,7 +56,6 @@ public class LoginController {
             weCharUserInfo = sayHello(code);
             UsernamePasswordToken usernamePasswordToken=new UsernamePasswordToken(weCharUserInfo.getNickname(),weCharUserInfo.getOpenid());
             Subject subject = SecurityUtils.getSubject();
-            usernamePasswordToken.setRememberMe(true);
             //完成登录
             subject.login(usernamePasswordToken);
         }catch (Exception e){

@@ -57,7 +57,7 @@ public class SelectController {
 
     @RequestMapping("commit")
     @ResponseBody
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = {Exception.class,RuntimeException.class})
     public Map commit(@RequestParam(value = "ids[]") Long[] ids,HttpSession httpSession){
         String code = (String) httpSession.getAttribute("code");
 
