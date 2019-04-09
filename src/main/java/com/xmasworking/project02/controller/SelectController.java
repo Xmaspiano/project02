@@ -54,7 +54,7 @@ public class SelectController {
 
         int length = commitRepository.countByOpenid(account.getOpenid());
         if(length >= 10){
-            ModelAndView modelAndView = new ModelAndView("redirect:/success");
+            ModelAndView modelAndView = new ModelAndView("redirect:/showinfo");
             return modelAndView;
         }
 
