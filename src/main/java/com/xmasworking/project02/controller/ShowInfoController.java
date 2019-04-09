@@ -11,11 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by IntelliJ IDEA.
  */
 @Controller
-@RequestMapping("/showinfo")
 public class ShowInfoController {
 
-    @RequestMapping
+    @RequestMapping("/showinfo")
     public String index(){
         return "showinfo";
     }
+
+    @RequestMapping("/tpsm")
+    public String tpsm(){
+        return "tpsm";
+    }
+
 }

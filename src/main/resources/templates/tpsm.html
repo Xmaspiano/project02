@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <title>投票说明</title>
+        <link rel="stylesheet" href="../../../../../../../补充/web/frozen.css">
+        <link rel="stylesheet" href="../../../../../../../补充/web/demo.css">
+    </head>
+    
+    <body ontouchstart>
+        <header class="ui-header ui-header-positive ui-border-b">
+            <h1>投票说明</h1>
+        </header>
+        
+        <section class="ui-container">
+
+
+
+<section id="list">
+    <div class="demo-item">
+        <div class="demo-block">
+            <ul class="ui-list ui-list-pure ui-border-b">
+                <li class="ui-border-t">
+                  1.请各分子公司输入各分子公司对应的投票密码进入投票程序；
+                </li>
+                <li class="ui-border-t">
+                  2.每个公司统一分配了300个投票名额；
+                </li>
+                <li class="ui-border-t">
+                  3.投票需要选择10名候选人，才能提交投票，请各个分子公司投票人认真查阅各个候选人资料，投出您神圣的一票；
+                </li>
+                <li class="ui-border-t">
+                  4.投票时间为3天，即2019年x月x日~2019年x月x日截止。
+                </li>
+                
+            </ul>
+        </div>
+		<div class="logo" style="text-align: center;"><a href="#" class="back">返回</a></div>
+    </div>
+</section>
+
+
+ 
+        </section><!-- /.ui-container-->
+        <script>
+        $('.ui-list li,.ui-tiled li').click(function(){
+            if($(this).data('href')){
+                location.href= $(this).data('href');
+            }
+        });
+        $('.ui-header .ui-btn').click(function(){
+            location.href= 'index.html';
+        });
+        </script>
+    </body>
+</html>
