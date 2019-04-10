@@ -133,25 +133,17 @@
                     $(this).html("投票");
                 }else{
                     $(this).html("已选");
-                    $(this).popover({
-                        content:"已选"+$("button.btn-primary[name='selectBtn'][data-type="+type+"]").length+"人！",
-                        placement: "top",
-                        trigger:"manual",
-                        delay:
-                            { show: 500, hide: 1000 }
-
-                    });
                 }
-            }else {
-                $(this).popover({
-                    content:"已选完"+$("button.btn-primary[name='selectBtn'][data-type="+type+"]").length+"名候选人！",
-                    placement: "top",
-                    trigger:"manual",
-                    delay:
-                        { show: 500, hide: 1000 }
-
-                });
             }
+
+            $(this).popover({
+                content:"已选择"+$("button.btn-primary[name='selectBtn'][data-type="+type+"]").length+"名候选人！",
+                placement: "top",
+                trigger:"manual",
+                delay:
+                    { show: 500, hide: 1000 }
+
+            });
 
             $(this).popover('show');
             var that = this;
