@@ -131,24 +131,26 @@
                 });
                 if($(this).html() == "已选"){
                     $(this).html("投票");
-                    realSize = realSize-1;
                 }else{
                     $(this).html("已选");
-                    realSize = realSize+1;
                 }
             }
 
             $(this).popover({
-                content:"已选择"+realSize+"名候选人！",
+                content:"已选择"+$("button.btn-primary[name='selectBtn'][data-type="+type+"]").length+"名候选人！",
                 placement: "top",
                 trigger:"manual",
                 delay:
                     { show: 500, hide: 1000 }
 
             });
+
             $(this).popover('show');
             var that = this;
             setTimeout(function(){
+                $(that).on('hidden.bs.popover', function () {
+                    $(that).popover('destroy');
+                });
                 $(that).popover('hide');
             },2000);
         });
