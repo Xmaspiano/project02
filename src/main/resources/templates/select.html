@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <button class="btn btn-success" id="apply" style="width: 100%">投票</button>
+    <button class="btn btn-success" id="apply" style="width: 100%">提交投票</button>
     <div class="text-center" style="padding: 15px 0px 30px 0px">
         <iframe name="Copyright" width=100% height=100%
                 marginwidth=0 marginheight=0 frameborder="no" border="0"  src="/src/Copyright.html" ></iframe>
@@ -99,6 +99,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 <script>
+    var ckeckNum = 0;
     $(function(){
 
         if(window.history && window.history.pushState) {
@@ -135,21 +136,20 @@
                 }else{
                     $(this).html("已选");
                 }
-            }else{
-                $(this).popover({
-                    content:"已选择"+realSize+"名候选人！",
-                    placement: "top",
-                    trigger:"manual",
-                    delay:
-                        { show: 500, hide: 1000 }
-
-                });
-                $(this).popover('show');
-                var that = this;
-                setTimeout(function(){
-                    $(that).popover('hide');
-                },2000);
             }
+            $(this).popover({
+                content:"已选择"+realSize+"名候选人！",
+                placement: "top",
+                trigger:"manual",
+                delay:
+                    { show: 500, hide: 1000 }
+
+            });
+            $(this).popover('show');
+            var that = this;
+            setTimeout(function(){
+                $(that).popover('hide');
+            },2000);
         });
 
         $("#apply").on("click",function(){
