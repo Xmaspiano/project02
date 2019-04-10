@@ -123,6 +123,7 @@
         $("button[name='selectBtn']").on("click",function(){
             var type = $(this).data("type");
             var maxSize = 10;
+            var realSize = $("button.btn-primary[name='selectBtn'][data-type="+type+"]").length;
 
             if($(this).hasClass("btn-primary") || maxSize > realSize){
                 $(this).toggleClass(function(){
@@ -130,11 +131,13 @@
                 });
                 if($(this).html() == "已选"){
                     $(this).html("投票");
+                    realSize = realSize-1;
                 }else{
                     $(this).html("已选");
+                    realSize = realSize+1;
                 }
             }
-            var realSize = $("button.btn-primary[name='selectBtn'][data-type="+type+"]").length;
+
             $(this).popover({
                 content:"已选择"+realSize+"名候选人！",
                 placement: "top",
