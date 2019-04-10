@@ -47,6 +47,7 @@
                 <div class="col-xs-6 thumbnail">
                     <!--<div class="">-->
                     <h4 class="text-center" th:text="${showUserInfo.username}">X</h4>
+                    <p th:text="${showUserInfo.company}"></p>
                     <img th:src="${'/images/showuserinfo/user/'+showUserInfo.username+'.jpg'}" class="img-rounded" style="max-height: 160px; max-width: 160px;">
                     <div class="caption text-center">
                         <button name="selectBtn" th:attr="data-type=${showUserInfo.type},data-id=${showUserInfo.id}"
