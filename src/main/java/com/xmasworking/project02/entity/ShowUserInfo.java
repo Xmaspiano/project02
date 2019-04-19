@@ -25,7 +25,6 @@ import javax.persistence.*;
 public class ShowUserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @OrderBy
     Long id;
     String type;
     String department;
