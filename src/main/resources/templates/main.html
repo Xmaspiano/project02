@@ -2,10 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1 maximum-scale=1, user-scalable=no">
+    <!--<meta name="viewport" content="initial-scale=1 maximum-scale=1, user-scalable=no">-->
+    <meta name="viewport" content="maximum-scale=1,user-scalable=no">
     <title>票选第七届四川路桥十大杰出青年</title>
     <style type="text/css">
-        body{background-image: url("/images/bg.jpeg");background-size: 100%}
+        body{
+            background-image: url("/images/bg.jpeg");
+            /*background-size: 100%*/
+            background-size: cover;  //只支持IE9+
+            -webkit-background-size: cover; //webkit核心
+            -moz-background-size: cover; //FF核心
+            -o-background-size: cover; //应该是Opera核心吧，反正不是IE的，就先不管它了
+        }
 
         #invite_code{margin:0 auto;display: block;width: 60%;height: 80px;border-radius:16px;background: #96a5bb;margin-top:120% }
         input{font-size:36px;padding-left: 20px;text-align: center;color: #435a7c }
