@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/main")
 public class MainController {
-    private final int LIMIT_SIZE = 500;
+    private final int LIMIT_SIZE = 80;
 
     @Autowired
     UseCodeRepository useCodeRepository;
