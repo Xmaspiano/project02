@@ -23,4 +23,9 @@ public class ShowInfoController {
         return "tpsm";
     }
 
+    @RequestMapping("/ysx")
+    public String ysx(){
+        return "ysx";
+    }
+
 }

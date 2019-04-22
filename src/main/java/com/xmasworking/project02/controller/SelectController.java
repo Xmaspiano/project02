@@ -81,7 +81,13 @@ public class SelectController {
         Account account = (Account)SecurityUtils.getSubject().getPrincipal();
         UseCode useCode = useCodeRepository.findOneByOpenid(account.getOpenid());
         if(useCode != null && useCode.getCode().equals(code)){
-
+            int codeTimes = useCodeRepository.countByCodeAndStatus(code,1);
+            if(codeTimes >= 80){
+                map.put("forword", "/ysx");
+                map.put("status", true);
+                map.put("msg", "投票码已投满票数!!!");
+                return map;
+            }
         }else {
             System.out.println("投票码异常!!!"+useCode);
         }

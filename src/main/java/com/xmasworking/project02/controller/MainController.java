@@ -55,11 +55,14 @@ public class MainController {
             //是否已投票
             if(isUseCode(inviteCode)){
                 modelAndView = new ModelAndView("redirect:/showinfo");
+                return modelAndView;
+
             }
 
             int codeTimes = useCodeRepository.countByCodeAndStatus(inviteCode,1);
             if(codeTimes >= LIMIT_SIZE){
-                throw new Exception("投票码已投满票数!!!");
+                modelAndView = new ModelAndView("redirect:/ysx");
+                return modelAndView;
             }
 
             modelAndView = new ModelAndView("redirect:/select");
