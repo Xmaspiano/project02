@@ -88,6 +88,14 @@ public class SelectController {
                 map.put("msg", "投票码已投满票数!!!");
                 return map;
             }
+
+            int length = commitRepository.countByOpenid(account.getOpenid());
+            if(length >= 10){
+                map.put("forword", "/showinfo");
+                map.put("status", true);
+                map.put("msg", "已投票!!!");
+                return map;
+            }
         }else {
             System.out.println("投票码异常!!!"+useCode);
         }
