@@ -28,4 +28,9 @@ public class ShowInfoController {
         return "ysx";
     }
 
+    @RequestMapping("/end")
+    public String end(){
+        return "end";
+    }
+
 }

@@ -30,7 +30,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean bean=new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager);
         //配置登录的url和登录成功的url
-        bean.setLoginUrl("/login");
+        bean.setLoginUrl("/end");
         bean.setSuccessUrl("/main");
 //        bean.setUnauthorizedUrl("/system/index");
 
@@ -45,7 +45,7 @@ public class ShiroConfig {
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout**","logout");
 
-        filterChainDefinitionMap.put("/login/**","anon");
+        filterChainDefinitionMap.put("/end/**","anon");
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/images/**", "anon");
         filterChainDefinitionMap.put("/src/**", "anon");
@@ -82,6 +82,7 @@ public class ShiroConfig {
     public SessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(enterpriseCacheSessionDAO());
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
         return sessionManager;
     }
 
